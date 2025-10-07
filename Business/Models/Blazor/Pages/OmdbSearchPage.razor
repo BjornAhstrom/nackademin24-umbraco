@@ -1,0 +1,89 @@
+﻿@page "/OmdbSearchPage"
+@using nackademin24_umbraco.Business.Services.Interfaces
+@using Microsoft.AspNetCore.Components.Forms
+
+@code {
+    [Inject] private IOmdbService? _omdbService { get; set; }
+
+    private OmdbSearchModel SearchModel = new();
+    private List<Movie> Movies = new();
+    private bool IsSearching = false;
+
+    private async Task FetchMoviesAsync()
+    {
+        if (string.IsNullOrWhiteSpace(SearchModel.Query))
+            return;
+
+        Movies.Clear();
+        IsSearching = true;
+
+        try
+        {
+            await Task.Delay(750); // liten delay för UX
+
+            Movies = await _omdbService!.SearchAsync(SearchModel);
+        }
+        finally
+        {
+            IsSearching = false;
+        }
+    }
+}
+
+<style type="text/css">
+    .poster-wrapper {
+        width: 100%;
+        aspect-ratio: 2/3;
+        overflow: hidden;
+    }
+
+        .poster-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+</style>
+
+<div class="container py-5">
+    <EditForm Model="@SearchModel" OnValidSubmit="FetchMoviesAsync">
+        <div class="row mb-4">
+            <div class="col-md-8 offset-md-2">
+                <div class="input-group">
+                    <InputText id="searchInput" class="form-control search-input" name="query" type="search"
+                               placeholder="Search for a movie" aria-label="Search"
+                               @bind-Value="SearchModel.Query" disabled="@IsSearching" />
+
+                    <button type="submit" class="input-group-text search-button" id="submitButton" disabled="@IsSearching">
+                        @if (!IsSearching)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">Search</span>
+                        }
+                        else
+                        {
+                            <i class="fas fa-search"></i>
+                        }
+                    </button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-4">
+    @foreach (var item in Movies)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="poster-wrapper">
+                    <img src="@item.Poster" onerror="this.onerror=null;this.src='/images/no-image-found.png';" class="card-img-top img-fluid" alt="Movie Poster" />
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                </div>
+                <div class="card-footer">
+                    <small class="text-body-secondary">@item.Year - @item.Type</small>
+                </div>
+            </div>
+        </div>
+    }
+</div>

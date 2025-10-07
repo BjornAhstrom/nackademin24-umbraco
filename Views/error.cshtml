@@ -1,0 +1,17 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ErrorPageViewModel>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using nackademin24_umbraco.Business.ViewModels
+
+@{
+
+	Layout = "root.cshtml";
+
+
+
+	var errorMessage = Model?.Value<string>("errorMessage");
+}
+
+<div class="container">
+	<h1>@errorMessage</h1>
+</div>

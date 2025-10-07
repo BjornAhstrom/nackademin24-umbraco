@@ -1,17 +1,22 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits UmbracoViewPage<IBase>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IBase>
 @{
-	Layout = null;
+    Layout = null;
 }
-
 <html>
-	<head>
-	<title></title>
-
-	<meta name="description" value="@Html.Raw(Model.MetaDescription)" />
-
-	</head>
-	<body>
-		@RenderBody()
-	</body>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
+    <title></title>
+    <meta name="description" content="@Html.Raw(Model.MetaDescription)" />
+</head>
+<body>
+    <header>
+    </header>
+    <div class="wrapper">
+        @RenderBody()
+    </div>
+    
+    <script src="~/_framework/blazor.web.js"></script>
+</body>
 </html>

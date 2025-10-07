@@ -1,0 +1,24 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>; 
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+
+@{
+    var logoText = Model?.Content.Value<string>("logoText");
+}
+
+@if (!string.IsNullOrEmpty(logoText))
+{
+    <h1>@logoText</h1>
+}
+
+    @* <nav class="nav-bar">
+        <ul class="nav-ul">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            @for (int i = 1; i <= 3; i++)
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Link @i</a>
+                </li>
+            }
+        </ul>
+    </nav> *@
